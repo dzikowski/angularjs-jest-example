@@ -15,7 +15,7 @@ export const products = [
 export const units = [
   { id: 'U-1', name: 'Metre', shortName: 'm' },
   { id: 'U-2', name: 'Kilogram', shortName: 'kg' },
-  { id: 'U-3', name: 'Piece', shortName: 'pc' },
+  { id: 'U-3', name: 'Pieces', shortName: 'pcs' },
 ];
 
 export const prices = [

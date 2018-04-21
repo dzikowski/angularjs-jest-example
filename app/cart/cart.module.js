@@ -1,10 +1,10 @@
 import angular from 'angular';
-import ProductsModule from '../products/products.module';
+import ProductModule from '../product/product.module';
 import CartComponent from './cart.component';
 import CartService from './cart.service';
 
 export default angular
-  .module('app.cart', [ProductsModule])
+  .module('app.cart', [ProductModule])
   .component('cart', CartComponent)
   .service('CartService', CartService)
   .name;

@@ -12,9 +12,12 @@ export default class ProductService {
         if (found) {
           resolve(found);
         } else {
-          reject(`Product ${productId} not found.`);
+          reject(ProductService.notFound(productId));
         }
       }, 500);
     });
   }
 }
+
+ProductService.notFound = (productId) =>
+  `Product ${productId} not found.`;

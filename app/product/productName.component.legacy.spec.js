@@ -28,11 +28,9 @@ describe('productName.component', () => {
   });
 
   it('should render product name', () => {
-    for (let i = 0; i < 20; i++) {
-      const element = compile(`<product-name product-id="'${product.id}'" />`)(scope);
-      scope.$digest();
-      expect(element.html()).toContain(product.name);
-    }
+    const element = compile(`<product-name product-id="'${product.id}'" />`)(scope);
+    scope.$digest();
+    expect(element.html()).toContain(product.name);
   });
 
   it('should render information about missing product', () => {

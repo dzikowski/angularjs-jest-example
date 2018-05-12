@@ -57,13 +57,13 @@ export default (...modules) => (mocks, ...accessNames) => {
 
   const app = {};
 
-  const additionalNames = [...new Set([...mockNames, ...accessNames])];
+  const otherNames = [...new Set([...mockNames, ...accessNames])];
 
-  angular.mock.inject(['$rootScope', '$compile', '$q', ...additionalNames, ($rootScope, $compile, $q, ...additional) => {
+  angular.mock.inject(['$rootScope', '$compile', '$q', ...otherNames, ($rootScope, $compile, $q, ...other) => {
     app.scope = $rootScope.$new();
 
-    additionalNames.forEach((name, index) => {
-      app[name] = additional[index];
+    otherNames.forEach((name, index) => {
+      app[name] = other[index];
     });
 
     app.render = (html) => {

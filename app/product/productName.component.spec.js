@@ -3,8 +3,6 @@ import ProductModule from './product.module';
 
 const product = { id: 'P-1', name: 'Copper wire 0.6 mm', unitId: 'U-1' };
 
-// Note: in this case simple JS Promise would be enough. I just want to show
-// that we have support for dependency injection.
 const ProductServiceMock = ($q) => ({
   getProduct(productId) {
     return $q((resolve) => resolve(productId === product.id ? product : undefined));

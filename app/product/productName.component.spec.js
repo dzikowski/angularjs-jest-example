@@ -18,16 +18,14 @@ describe('productName.component', () => {
     });
   });
 
-  it('should render product name', async () => {
-    expect.assertions(1);
-    const element = await testApp.render(`<product-name product-id="'${product.id}'" />`);
+  it('should render product name', () => {
+    const element = testApp.render(`<product-name product-id="'${product.id}'" />`);
     expect(element.html()).toContain(product.name);
   });
 
-  it('should render information about missing product', async () => {
-    expect.assertions(2);
+  it('should render information about missing product', () => {
     const missingId = 'missing-product-id';
-    const element = await testApp.render(`<product-name product-id="'${missingId}'" />`);
+    const element = testApp.render(`<product-name product-id="'${missingId}'" />`);
     expect(element.html()).toContain('Unknown product');
     expect(element.html()).toContain(missingId);
   });

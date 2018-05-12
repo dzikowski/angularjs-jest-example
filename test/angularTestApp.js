@@ -16,34 +16,22 @@ const createElementFromHTML = (htmlString) => {
   return div.firstChild;
 };
 
-/*
- * The component may require to call chain of promises to render and stabilize its state. We will keep comparing
- * previous and current rendered HTML to detect when the component stabilizes.
- *
- * Right now neither timeouts nor intervals are supported. You can provide recursion depth only.
- *
- * Note: we don't use `$q`, because it causes timeouts in this place. // TODO testit
- */
 const stableElementPromise = ($q, element, scope, depth = 0, error) => {
   if (depth >= 10) {
     throw error;
   } else {
-    return Promise.resolve() // You cannot use $q, because you have $q inside $q and timeouts
-      .then(() => {
-        const prevHtml = element.html();
-        scope.$digest();
-        if (element.html() === prevHtml) {
-          return element;
-        } else {
-          throw new Error(`Component is not stable after ${depth} iterations`);
-        }
-      })
-      .catch((e) => stableElementPromise($q, element, scope, depth + 1, e));
+    const prevHtml = element.html();
+    scope.$digest();
+    if (element.html() === prevHtml) {
+      return element;
+    } else {
+      const e = new Error(`Component is not stable after ${depth} iterations`);
+      return stableElementPromise($q, element, scope, depth + 1, e);
+    }
   }
 };
 
 export default (...modules) => (mocks, ...accessNames) => {
-  // const mocks = createMocks(angular.mock);
   modules.forEach((module) => angular.mock.module(module));
 
   const mockNames = Object.keys(mocks);

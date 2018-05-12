@@ -18,10 +18,8 @@ describe('cart.component', () => {
     });
   });
 
-  it('should render cart', async () => {
-    expect.assertions(1);
-    const element = await testApp.render('<cart />');
+  it('should render cart', () => {
+    const element = testApp.render('<cart />');
     expect(element.html()).toMatchSnapshot();
   });
 });
-

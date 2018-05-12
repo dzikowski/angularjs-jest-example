@@ -15,6 +15,7 @@ describe('cart.component', () => {
   beforeEach(() => {
     testApp = angularTestApp(CartModule)({
       CartService: ($q) => CartServiceMock($q),
+      // TODO other mocks
     });
   });
 

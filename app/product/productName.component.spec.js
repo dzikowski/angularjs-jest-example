@@ -13,9 +13,7 @@ describe('productName.component', () => {
   let testApp;
 
   beforeEach(() => {
-    testApp = angularTestApp(ProductModule)({
-      ProductService: ($q) => ProductServiceMock($q),
-    });
+    testApp = angularTestApp(ProductModule)({ ProductService: ($q) => ProductServiceMock($q) });
   });
 
   it('should render product name', () => {

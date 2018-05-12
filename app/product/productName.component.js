@@ -7,12 +7,7 @@ export default {
     this.$onChanges = () =>
       ProductService.getProduct(this.productId)
         .then((product) => {
-          console.log(product)
-          this.name = product && product.name;
-        })
-        .catch((e) => {
-          console.log('err', e)
-          this.name = undefined;
+          this.name = (product || {}).name;
         });
   },
   bindings: {

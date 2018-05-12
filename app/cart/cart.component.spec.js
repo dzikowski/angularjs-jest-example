@@ -2,7 +2,6 @@ import angularTestApp from '../../test/angularTestApp';
 import CartModule from './cart.module';
 import { items } from '../dataMocks';
 
-
 const CartServiceMock = ($q) => ({
   getCart() {
     return $q((resolve) => resolve(items));

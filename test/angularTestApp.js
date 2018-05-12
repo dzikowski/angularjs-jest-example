@@ -24,18 +24,21 @@ const createElementFromHTML = (htmlString) => {
  *
  * Note: we don't use `$q`, because it causes timeouts in this place. // TODO testit
  */
-const stableElementPromise = (element, scope, depth = 10, error) => {
-  if (depth <= 0) {
+const stableElementPromise = ($q, element, scope, depth = 0, error) => {
+  if (depth >= 10) {
     throw error;
   } else {
-    return Promise.resolve()
+    return Promise.resolve() // You cannot use $q, because you have $q inside $q and timeouts
       .then(() => {
         const prevHtml = element.html();
         scope.$digest();
-        expect(element.html()).toEqual(prevHtml);
-        return element;
+        if (element.html() === prevHtml) {
+          return element;
+        } else {
+          throw new Error(`Component is not stable after ${depth} iterations`);
+        }
       })
-      .catch((e) => stableElementPromise(element, scope, depth - 1, e));
+      .catch((e) => stableElementPromise($q, element, scope, depth + 1, e));
   }
 };
 
@@ -56,7 +59,7 @@ export default (...modules) => (mocks, ...accessNames) => {
 
   const additionalNames = [...new Set([...mockNames, ...accessNames])];
 
-  angular.mock.inject(['$rootScope', '$compile', ...additionalNames, ($rootScope, $compile, ...additional) => {
+  angular.mock.inject(['$rootScope', '$compile', '$q', ...additionalNames, ($rootScope, $compile, $q, ...additional) => {
     app.scope = $rootScope.$new();
 
     additionalNames.forEach((name, index) => {
@@ -72,7 +75,7 @@ export default (...modules) => (mocks, ...accessNames) => {
       element.minified = () =>
         createElementFromHTML(minifyHtml(element.html()));
 
-      return stableElementPromise(element, app.scope);
+      return stableElementPromise($q, element, app.scope);
     };
   }]);
 

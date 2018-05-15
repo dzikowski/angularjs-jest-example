@@ -12,7 +12,7 @@ const ProductServiceMock = ($q) => ({
 });
 
 // does not work -- setTimeout escapes event loop
-const ProductServiceMock2 = ($q) => ({
+const ProductServiceMock2 = ($q) => ({ // eslint-disable-line no-unused-vars
   getProduct(productId) {
     return $q((resolve) => setTimeout(() => resolve(productId === product.id ? product : undefined)));
   },

@@ -16,20 +16,37 @@ const createElementFromHTML = (htmlString) => {
   return div.firstChild;
 };
 
-const stableElementPromise = ($q, element, scope, depth = 0, error) => {
-  if (depth >= 10) {
-    throw error;
-  } else {
-    const prevHtml = element.html();
-    scope.$digest();
-    if (element.html() === prevHtml) {
-      return element;
-    } else {
-      const e = new Error(`Component is not stable after ${depth} iterations`);
-      return stableElementPromise($q, element, scope, depth + 1, e);
-    }
-  }
+const render = ($compile, $scope) => (html) => {
+  const element = $compile(html)($scope);
+  $scope.$digest();
+
+  element.normalizedText = () =>
+    element.text().replace(/\s+/g, ' ').trim();
+
+  element.minified = () =>
+    createElementFromHTML(minifyHtml(element.html()));
+
+  return element;
 };
+
+const eventually = ($scope) => (fn, interval, limit) =>
+  new Promise((resolve, reject) => {
+    const check = (iteration = 0) => {
+      $scope.$digest();
+      try {
+        resolve(fn());
+      } catch (e) {
+        if (iteration >= limit) {
+          console.warn(iteration, 'reached with exception');
+          reject(e);
+        } else {
+          setTimeout(() => check(iteration + 1), interval);
+        }
+      }
+    };
+
+    check();
+  });
 
 export default (...modules) => (mocks, ...accessNames) => {
   modules.forEach((module) => angular.mock.module(module));
@@ -54,18 +71,11 @@ export default (...modules) => (mocks, ...accessNames) => {
       app[name] = other[index];
     });
 
-    app.render = (html) => {
-      const element = $compile(html)(app.$scope);
-      app.$scope.$digest();
+    app.render = (html) =>
+      render($compile, app.$scope)(html);
 
-      element.normalizedText = () =>
-        element.text().replace(/\s+/g, ' ').trim();
-
-      element.minified = () =>
-        createElementFromHTML(minifyHtml(element.html()));
-
-      return element;
-    };
+    app.eventually = (fn, { interval, limit } = { interval: 0, limit: 10 }) =>
+      eventually(app.$scope)(fn, interval, limit);
   }]);
 
   return app;

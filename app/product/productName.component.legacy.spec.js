@@ -1,14 +1,10 @@
 import angular from 'angular';
 import 'angular-mocks';
 import ProductModule from './product.module';
+import { ProductServiceInstant } from '../serviceMocks';
+import { products } from '../dataMocks';
 
-const product = { id: 'P-1', name: 'Copper wire 0.6 mm', unitId: 'U-1' };
-
-const ProductServiceMock = ($q) => ({
-  getProduct(productId) {
-    return $q((resolve) => resolve(productId === product.id ? product : undefined));
-  },
-});
+const [product] = products;
 
 describe('productName.component', () => {
   let scope;
@@ -18,7 +14,7 @@ describe('productName.component', () => {
     angular.mock.module(ProductModule);
 
     angular.mock.module(($provide) => {
-      $provide.factory('ProductService', ($q) => ProductServiceMock($q));
+      $provide.factory('ProductService', ($q) => ProductServiceInstant($q));
     });
 
     angular.mock.inject(($rootScope, $compile) => {

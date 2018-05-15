@@ -1,9 +1,10 @@
 import angularTestApp from '../../test/angularTestApp';
 import ProductModule from './product.module';
+import { products } from '../dataMocks';
 
-const product = { id: 'P-1', name: 'Copper wire 0.6 mm', unitId: 'U-1' };
+const [product] = products;
 
-const ProductServiceMockPromise = () => ({
+const ProductServicePromise = () => ({
   getProduct(productId) {
     return new Promise((resolve) => resolve(productId === product.id ? product : undefined));
   },
@@ -13,7 +14,7 @@ describe('productName.component', () => {
   let testApp;
 
   beforeEach(() => {
-    testApp = angularTestApp(ProductModule)({ ProductService: ($q) => ProductServiceMockPromise($q) }, '$compile');
+    testApp = angularTestApp(ProductModule)({ ProductService: () => ProductServicePromise() }, '$compile');
   });
 
   it('should render product name', () => {

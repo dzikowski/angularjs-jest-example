@@ -4,7 +4,7 @@ export default {
     this.$onChanges = () =>
       ProductService.getProduct(this.productId)
         .then((product) => {
-          this.unitId = product && product.unitId;
+          this.unitId = (product || {}).unitId;
         });
   },
   bindings: {

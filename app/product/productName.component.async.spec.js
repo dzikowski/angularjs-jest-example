@@ -1,7 +1,8 @@
 import angularTestApp from '../../test/angularTestApp';
 import ProductModule from './product.module';
+import { products } from '../dataMocks';
 
-const product = { id: 'P-1', name: 'Copper wire 0.6 mm', unitId: 'U-1' };
+const [product] = products;
 
 // works
 const ProductServiceMock = ($q) => ({

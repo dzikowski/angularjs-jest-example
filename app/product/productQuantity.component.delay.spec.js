@@ -1,28 +1,17 @@
 import angularTestApp from '../../test/angularTestApp';
 import ProductModule from './product.module';
+import { products } from '../dataMocks';
+import { ProductServiceDelay200, UnitServiceDelay200 } from '../serviceMocks';
 
-const product = { id: 'P-1', name: 'Copper wire 0.6 mm', unitId: 'U-1' };
-const unit = { id: 'U-1', shortName: 'm' };
-
-const ProductServiceMock = () => ({
-  getProduct(productId) {
-    return new Promise((resolve) => setTimeout(() => resolve(productId === product.id ? product : undefined), 200));
-  },
-});
-
-const UnitServiceMock = () => ({
-  getUnit(unitId) {
-    return new Promise((resolve) => setTimeout(() => resolve(unitId === unit.id ? unit : undefined), 200));
-  },
-});
+const [product] = products;
 
 describe('productQuantity.component', () => {
   let testApp;
 
   beforeEach(() => {
     testApp = angularTestApp(ProductModule)({
-      ProductService: () => ProductServiceMock(),
-      UnitService: () => UnitServiceMock(),
+      ProductService: () => ProductServiceDelay200(),
+      UnitService: () => UnitServiceDelay200(),
     });
   });
 

@@ -4,7 +4,7 @@ export default {
     this.$onChanges = () =>
       PriceService.getPrice(this.productId)
         .then((price) => {
-          this.price = price;
+          this.price = (price || {}).price;
         });
   },
   bindings: {

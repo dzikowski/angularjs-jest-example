@@ -1,31 +1,10 @@
 import angular from 'angular';
 import 'angular-mocks';
-import { minify } from 'html-minifier';
-import '../app/app.module';
-
-const minifyHtml = (html) =>
-  minify(html, {
-    collapseWhitespace: true,
-    removeComments: true,
-  });
-
-/* global document:true */
-const createElementFromHTML = (htmlString) => {
-  const div = document.createElement('div');
-  div.innerHTML = htmlString.trim();
-  return div.firstChild;
-};
+import snapshotSerializer from './snapshotSerializer';
 
 const render = ($compile, $scope) => (html) => {
   const element = $compile(html)($scope);
   $scope.$digest();
-
-  element.normalizedText = () =>
-    element.text().replace(/\s+/g, ' ').trim();
-
-  element.minified = () =>
-    createElementFromHTML(minifyHtml(element.html()));
-
   return element;
 };
 
@@ -37,7 +16,7 @@ const eventually = ($scope) => (fn, interval, limit) =>
         resolve(fn());
       } catch (e) {
         if (iteration >= limit) {
-          console.warn(iteration, 'reached with exception');
+          console.warn(`[eventually] ${iteration} iteration reached with exception`);
           reject(e);
         } else {
           setTimeout(() => check(iteration + 1), interval);
@@ -77,6 +56,8 @@ export default (...modules) => (mocks, ...accessNames) => {
     app.eventually = (fn, { interval, limit } = { interval: 0, limit: 10 }) =>
       eventually(app.$scope)(fn, interval, limit);
   }]);
+
+  expect.addSnapshotSerializer(snapshotSerializer);
 
   return app;
 };

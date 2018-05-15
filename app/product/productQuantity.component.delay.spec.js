@@ -30,7 +30,7 @@ describe('productQuantity.component', () => {
     const patience = { interval: 100, limit: 10 };
     const element = testApp.render(`<product-quantity product-id="'${product.id}'" quantity="20" />`);
     testApp.eventually(() => {
-      expect(element.normalizedText()).toEqual('20.00 m');
+      expect(element.text().replace(/\s/g, '')).toEqual('20.00m');
       done();
     }, patience);
   });

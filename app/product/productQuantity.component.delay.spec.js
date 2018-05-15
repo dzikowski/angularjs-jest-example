@@ -10,8 +10,8 @@ describe('productQuantity.component', () => {
 
   beforeEach(() => {
     testApp = angularTestApp(ProductModule)({
-      ProductService: () => ProductServiceDelay200(),
-      UnitService: () => UnitServiceDelay200(),
+      ProductService: ($q) => ProductServiceDelay200($q),
+      UnitService: ($q) => UnitServiceDelay200($q),
     });
   });
 

@@ -96,7 +96,7 @@ exports[`cart.component should render cart 1`] = `
           <span
             class="number text-nowrap ng-binding"
           >
-            $ -
+            $ 0.37
           </span>
         </product-price>
       </td>
@@ -164,7 +164,7 @@ exports[`cart.component should render cart 1`] = `
           <span
             class="number text-nowrap ng-binding"
           >
-            $ -
+            $ 6.49
           </span>
         </product-price>
       </td>
@@ -232,7 +232,7 @@ exports[`cart.component should render cart 1`] = `
           <span
             class="number text-nowrap ng-binding"
           >
-            $ -
+            $ 1.99
           </span>
         </product-price>
       </td>
@@ -300,7 +300,7 @@ exports[`cart.component should render cart 1`] = `
           <span
             class="number text-nowrap ng-binding"
           >
-            $ -
+            $ 5.69
           </span>
         </product-price>
       </td>

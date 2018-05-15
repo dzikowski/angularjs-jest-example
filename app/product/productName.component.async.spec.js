@@ -21,11 +21,12 @@ describe('productName.component', () => {
   let testApp;
 
   beforeEach(() => {
-    testApp = angularTestApp(ProductModule)({ ProductService: ($q) => ProductServiceMock($q) });
+    testApp = angularTestApp(ProductModule)({ ProductService: ($q) => ProductServiceMock($q) }, '$compile');
   });
 
   it('should render product name', () => {
-    const element = testApp.render(`<product-name product-id="'${product.id}'" />`);
+    const element = testApp.$compile(`<product-name product-id="'${product.id}'" />`)(testApp.$scope);
+    testApp.$scope.$digest();
     expect(element.html()).toContain(product.name);
   });
 });

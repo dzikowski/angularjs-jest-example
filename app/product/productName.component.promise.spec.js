@@ -16,13 +16,13 @@ describe('productName.component', () => {
     testApp = angularTestApp(ProductModule)({ ProductService: ($q) => ProductServiceMockPromise($q) }, '$compile');
   });
 
-  it('should render product name', (done) => {
+  it('should render product name', () => {
     const element = testApp.$compile(`<product-name product-id="'${product.id}'" />`)(testApp.$scope);
+    expect.assertions(1);
     Promise.resolve()
       .then(() => {
         testApp.$scope.$digest();
         expect(element.html()).toContain(product.name);
-        done();
       });
   });
 });

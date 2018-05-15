@@ -47,7 +47,7 @@ export default (...modules) => (mocks, ...accessNames) => {
 
   const otherNames = [...new Set([...mockNames, ...accessNames])];
 
-  angular.mock.inject(['$rootScope', '$compile', '$q', ...otherNames, ($rootScope, $compile, $q, ...other) => {
+  angular.mock.inject(['$rootScope', '$compile', ...otherNames, ($rootScope, $compile, ...other) => {
     app.$scope = $rootScope.$new();
 
     otherNames.forEach((name, index) => {
@@ -56,6 +56,7 @@ export default (...modules) => (mocks, ...accessNames) => {
 
     app.render = (html) => {
       const element = $compile(html)(app.$scope);
+      app.$scope.$digest();
 
       element.normalizedText = () =>
         element.text().replace(/\s+/g, ' ').trim();
@@ -63,7 +64,7 @@ export default (...modules) => (mocks, ...accessNames) => {
       element.minified = () =>
         createElementFromHTML(minifyHtml(element.html()));
 
-      return stableElementPromise($q, element, app.$scope);
+      return element;
     };
   }]);
 

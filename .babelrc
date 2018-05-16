@@ -5,6 +5,5 @@
   ],
   "plugins": [
     "angularjs-annotate",
-    "transform-object-assign"
   ]
 }

@@ -24,7 +24,6 @@
     "eslint-plugin-jest": "^21.15.0",
     "html-minifier": "^3.5.14",
     "jest": "^21.2.1",
-    "ng-annotate-loader": "^0.6.1",
     "style-loader": "^0.21.0",
     "webpack": "^3.11.0",
     "webpack-angular-translate": "^2.0.0",

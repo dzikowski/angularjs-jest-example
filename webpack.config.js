@@ -6,78 +6,78 @@ const plugins = [
 
   new webpack.optimize.CommonsChunkPlugin({
     name: 'vendor',
-    filename: 'vendor.bundle.js'
+    filename: 'vendor.bundle.js',
   }),
 
   new webpack.ProvidePlugin({
     $: 'jquery',
     jQuery: 'jquery',
-    'window.jQuery': 'jquery'
+    'window.jQuery': 'jquery',
   }),
 
   new webpack.LoaderOptionsPlugin({
     options: {
       context: __dirname,
-      postcss: [autoprefixer({browsers: ['last 2 versions']})]
-    }
-  })
+      postcss: [autoprefixer({ browsers: ['last 2 versions'] })],
+    },
+  }),
 ];
 
 const rules = [
   {
     test: /\.js$/,
     loader: 'babel-loader',
-    exclude: /(node_modules)/
+    exclude: /(node_modules)/,
   },
   {
     test: /\.html$/,
     loader: 'raw-loader',
-    exclude: /(node_modules)/
+    exclude: /(node_modules)/,
   },
   {
     test: /\.css$/,
-    loaders: ['style-loader', 'css-loader']
+    loaders: ['style-loader', 'css-loader'],
   },
   {
     test: /\.scss$/,
-    loaders: ['style-loader', 'css-loader', 'sass-loader']
+    loaders: ['style-loader', 'css-loader', 'sass-loader'],
   },
   {
     test: /\.(eot|ttf|svg|woff|woff2)(\?\S*)?$/,
-    loader: 'file-loader'
-  }
+    loader: 'file-loader',
+  },
 ];
 
 const config = {
   context: path.join(__dirname, 'app'),
   entry: {
     app: './app.module.js',
-    vendor: './vendor.js'
+    vendor: './vendor.js',
   },
   output: {
-    path: __dirname + '/app',
-    filename: 'bundle.js'
+    path: `${__dirname}/app`,
+    filename: 'bundle.js',
   },
   plugins,
   node: {
     fs: 'empty',
-    tls: 'empty'
+    tls: 'empty',
   },
   module: {
-    rules
+    rules,
   },
   devServer: {
     proxy: {
       '/api/*': {
-        target: 'http://localhost:8080'
-      }
+        target: 'http://localhost:8080',
+      },
     },
-    host: '0.0.0.0'
-  }
+    host: '0.0.0.0',
+  },
 };
 
 if (process.env.NODE_ENV === 'production') {
-  config.output.path = __dirname + '/dist/webapp';
+  config.output.path = `${__dirname}/dist`;
   config.plugins.push(new webpack.optimize.UglifyJsPlugin());
 } else {
   config.devtool = 'eval';

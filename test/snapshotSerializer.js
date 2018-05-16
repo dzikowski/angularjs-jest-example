@@ -1,5 +1,4 @@
 import { minify } from 'html-minifier';
-import '../app/app.module';
 
 const minifyHtml = (html) =>
   minify(html, {

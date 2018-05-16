@@ -1,6 +1,8 @@
 export default {
   template: '{{ $ctrl.shortName }}',
   controller(UnitService) {
+    'ngInject';
+
     this.$onChanges = () =>
       UnitService.getUnit(this.unitId)
         .then((unit) => {

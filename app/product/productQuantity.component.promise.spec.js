@@ -1,6 +1,6 @@
 import angularTestApp from '../../test/angularTestApp';
 import ProductModule from './product.module';
-import {products, units} from "../dataMocks";
+import { products, units } from '../dataMocks';
 
 const [product] = products;
 
@@ -12,7 +12,7 @@ const ProductServicePromise = () => ({
 
 const UnitServicePromise = () => ({
   getUnit(unitId) {
-    return new Promise((resolve) => resolve(units.find(u => u.id === unitId)));
+    return new Promise((resolve) => resolve(units.find((u) => u.id === unitId)));
   },
 });
 

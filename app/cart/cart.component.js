@@ -20,6 +20,8 @@ export default {
     </table>
   `,
   controller(CartService) {
+    'ngInject';
+
     this.$onInit = () =>
       CartService.getCart()
         .then((items) => {

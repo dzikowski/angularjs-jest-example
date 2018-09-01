@@ -4,11 +4,6 @@ const path = require('path');
 
 const plugins = [
 
-  new webpack.optimize.CommonsChunkPlugin({
-    name: 'vendor',
-    filename: 'vendor.bundle.js',
-  }),
-
   new webpack.ProvidePlugin({
     $: 'jquery',
     jQuery: 'jquery',
@@ -52,7 +47,6 @@ const config = {
   context: path.join(__dirname, 'app'),
   entry: {
     app: './app.module.js',
-    vendor: './vendor.js',
   },
   output: {
     path: `${__dirname}/app`,

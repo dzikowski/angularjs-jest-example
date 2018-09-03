@@ -3,11 +3,12 @@ export default {
   controller(UnitService) {
     'ngInject';
 
-    this.$onChanges = () =>
+    this.$onChanges = () => {
       UnitService.getUnit(this.unitId)
         .then((unit) => {
           this.shortName = unit && unit.shortName;
         });
+    };
   },
   bindings: {
     unitId: '<',

@@ -1,6 +1,8 @@
 import angularTestApp from '../../test/angularTestApp';
 import CartModule from './cart.module';
-import { CartServiceInstant, PriceServiceInstant, ProductServiceInstant, UnitServiceInstant } from '../serviceMocks';
+import {
+  CartServiceInstant, PriceServiceInstant, ProductServiceInstant, UnitServiceInstant,
+} from '../serviceMocks';
 
 describe('cart.component', () => {
   let testApp;

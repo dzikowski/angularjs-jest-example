@@ -1,4 +1,6 @@
-import { items, prices, products, units } from './dataMocks';
+import {
+  items, prices, products, units,
+} from './dataMocks';
 
 /* @ngInject */
 export const CartServiceDelay500 = ($q) => ({

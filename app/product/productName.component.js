@@ -6,11 +6,12 @@ export default {
   controller(ProductService) {
     'ngInject';
 
-    this.$onChanges = () =>
+    this.$onChanges = () => {
       ProductService.getProduct(this.productId)
         .then((product) => {
           this.name = (product || {}).name;
         });
+    };
   },
   bindings: {
     productId: '<',

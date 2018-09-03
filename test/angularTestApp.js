@@ -8,24 +8,23 @@ const render = ($compile, $scope) => (html) => {
   return element;
 };
 
-const eventually = ($scope) => (fn, interval, limit) =>
-  new Promise((resolve, reject) => {
-    const check = (iteration = 0) => {
-      $scope.$digest();
-      try {
-        resolve(fn());
-      } catch (e) {
-        if (iteration >= limit) {
-          console.warn(`[eventually] ${iteration} iteration reached with exception`);
-          reject(e);
-        } else {
-          setTimeout(() => check(iteration + 1), interval);
-        }
+const eventually = ($scope) => (fn, interval, limit) => new Promise((resolve, reject) => {
+  const check = (iteration = 0) => {
+    $scope.$digest();
+    try {
+      resolve(fn());
+    } catch (e) {
+      if (iteration >= limit) {
+        console.warn(`[eventually] ${iteration} iteration reached with exception`);
+        reject(e);
+      } else {
+        setTimeout(() => check(iteration + 1), interval);
       }
-    };
+    }
+  };
 
-    check();
-  });
+  check();
+});
 
 export default (...modules) => (mocks, ...accessNames) => {
   modules.forEach((module) => angular.mock.module(module));
@@ -50,11 +49,13 @@ export default (...modules) => (mocks, ...accessNames) => {
       app[name] = other[index];
     });
 
-    app.render = (html) =>
-      render($compile, app.$scope)(html);
+    app.render = (html) => render($compile, app.$scope)(html);
 
-    app.eventually = (fn, { interval, limit } = { interval: 0, limit: 10 }) =>
-      eventually(app.$scope)(fn, interval, limit);
+    app.eventually = (fn, config = { }) => {
+      const interval = config.interval || 0;
+      const limit = config.limit || 10;
+      return eventually(app.$scope)(fn, interval, limit);
+    };
   }]);
 
   expect.addSnapshotSerializer(snapshotSerializer);

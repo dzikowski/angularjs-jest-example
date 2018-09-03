@@ -22,10 +22,11 @@ export default {
   controller(CartService) {
     'ngInject';
 
-    this.$onInit = () =>
+    this.$onInit = () => {
       CartService.getCart()
         .then((items) => {
           this.items = items;
         });
+    };
   },
 };

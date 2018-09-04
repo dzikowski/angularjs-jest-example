@@ -1,10 +1,12 @@
 import { minify } from 'html-minifier';
 
-const minifyHtml = (html) =>
-  minify(html, {
+const minifyHtml = (html) => {
+  const config = {
     collapseWhitespace: true,
     removeComments: true,
-  });
+  };
+  return minify(html, config);
+};
 
 /* global document:true */
 const createElementFromHTML = (htmlString) => {

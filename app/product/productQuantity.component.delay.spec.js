@@ -27,4 +27,16 @@ describe('productQuantity.component', () => {
       expect(text).toEqual('Pliers 20.00 pcs');
     }, patience);
   });
+
+  it('should match snapshot', async () => {
+    const testApp = testAppWithDelays();
+    const element = testApp.render(`<product-quantity product-id="'${product.id}'" quantity="20"></product-quantity>`);
+
+    await testApp.eventually(() => {
+      const text = element.text().trim().replace(/\s+/g, ' ');
+      expect(text).toEqual('20.00 pcs');
+    }, patience);
+
+    expect(element).toMatchSnapshot();
+  });
 });

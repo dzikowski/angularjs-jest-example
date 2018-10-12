@@ -17,15 +17,16 @@ describe('cart.component', () => {
   });
 
   const patience = { interval: 200, limit: 10 };
-  const getText = (element) => element.text().replace(/\s+/g, ' ');
-  const sampleRow = '3 Finishing coat 0.25 kg $ 1.99';
 
   it('should render cart', async () => {
     const testApp = testAppWithDelays();
     const element = testApp.render('<cart />');
 
     // wait until all information is loaded
-    await testApp.eventually(() => expect(getText(element)).toContain(sampleRow), patience);
+    await testApp.eventually(() => {
+      const text = element.text().replace(/\s+/g, ' ');
+      expect(text).toContain('3 Finishing coat 0.25 kg $ 1.99');
+    }, patience);
 
     expect(element).toMatchSnapshot();
   });

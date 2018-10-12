@@ -4,6 +4,11 @@ const path = require('path');
 
 const plugins = [
 
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor',
+    filename: 'vendor.bundle.js',
+  }),
+
   new webpack.ProvidePlugin({
     $: 'jquery',
     jQuery: 'jquery',
@@ -46,11 +51,12 @@ const rules = [
 const config = {
   context: path.join(__dirname, 'app'),
   entry: {
+    vendor: './vendor.js',
     app: './app.module.js',
   },
   output: {
     path: `${__dirname}/app`,
-    filename: 'bundle.js',
+    filename: './bundle.js',
   },
   plugins,
   node: {

@@ -1,80 +1,83 @@
-const webpack = require('webpack');
-const autoprefixer = require('autoprefixer');
 const path = require('path');
 
-const plugins = [
+const ROOT = path.resolve(__dirname, 'app');
 
-  new webpack.ProvidePlugin({
-    $: 'jquery',
-    jQuery: 'jquery',
-    'window.jQuery': 'jquery',
-  }),
+/**
+ * Webpack Plugins
+ */
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-  new webpack.LoaderOptionsPlugin({
-    options: {
-      context: __dirname,
-      postcss: [autoprefixer({ browsers: ['last 2 versions'] })],
-    },
-  }),
-];
+module.exports = {
+  context: ROOT,
 
-const rules = [
-  {
-    test: /\.js$/,
-    loader: 'babel-loader',
-    exclude: /(node_modules)/,
+  resolve: {
+    extensions: ['.ts', '.js'],
   },
-  {
-    test: /\.html$/,
-    loader: 'raw-loader',
-    exclude: /(node_modules)/,
-  },
-  {
-    test: /\.css$/,
-    loaders: ['style-loader', 'css-loader'],
-  },
-  {
-    test: /\.scss$/,
-    loaders: ['style-loader', 'css-loader', 'sass-loader'],
-  },
-  {
-    test: /\.(eot|ttf|svg|woff|woff2)(\?\S*)?$/,
-    loader: 'file-loader',
-  },
-];
 
-const config = {
-  context: path.join(__dirname, 'app'),
-  entry: {
-    app: './app.module.js',
-  },
-  output: {
-    path: `${__dirname}/app`,
-    filename: 'bundle.js',
-  },
-  plugins,
-  node: {
-    fs: 'empty',
-    tls: 'empty',
-  },
   module: {
-    rules,
-  },
-  devServer: {
-    proxy: {
-      '/api/*': {
-        target: 'http://localhost:8080',
+    rules: [
+      {
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'tslint-loader',
+          options: {
+            emitErrors: true,
+          },
+        },
+        enforce: 'pre',
       },
-    },
-    host: '0.0.0.0',
+
+      {
+        test: /\.ts$/,
+        exclude: [/node_modules/],
+        use: [
+          'ng-annotate-loader',
+          'awesome-typescript-loader',
+        ],
+      },
+
+      {
+        test: /\.(css|scss)$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'sass-loader'],
+          publicPath: '../',
+        }),
+      },
+
+      {
+        test: /\.(jpg|png|gif)$/,
+        use: 'file-loader',
+      },
+
+      {
+        test: /\.(svg|woff|woff2|eot|ttf)$/,
+        use: 'file-loader?outputPath=fonts/',
+      },
+
+      {
+        test: /.html$/,
+        exclude: /index.html$/,
+        use: 'html-loader',
+      },
+    ],
   },
+
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'AngularJS - Webpack',
+      template: 'index.html',
+      inject: true,
+    }),
+    new LoaderOptionsPlugin({
+      debug: true,
+      options: {},
+    }),
+    new ExtractTextPlugin('css/style.css'),
+  ],
+
+  entry: './app.module.js',
 };
-
-if (process.env.NODE_ENV === 'production') {
-  config.output.path = `${__dirname}/dist`;
-  config.plugins.push(new webpack.optimize.UglifyJsPlugin());
-} else {
-  config.devtool = 'eval';
-}
-
-module.exports = config;

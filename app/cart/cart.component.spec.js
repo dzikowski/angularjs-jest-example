@@ -16,6 +16,7 @@ describe('cart.component', () => {
     });
   });
 
+  // this test works because we use $q(), which is synchronous
   it('should render cart', () => {
     const element = testApp.render('<cart />');
     expect(element).toMatchSnapshot();

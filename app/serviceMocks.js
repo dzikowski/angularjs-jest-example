@@ -51,6 +51,12 @@ export const ProductServiceInstant = ($q) => ({
   },
 });
 
+export const ProductServicePromise = () => ({
+  getProduct(productId) {
+    return new Promise((resolve) => resolve(products.find((p) => p.id === productId)));
+  },
+});
+
 /* @ngInject */
 export const UnitServiceDelay500 = ($q) => ({
   getUnit(unitId) {

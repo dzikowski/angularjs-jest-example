@@ -4,9 +4,8 @@ import ProductModule from './product.module';
 import { ProductServiceInstant } from '../serviceMocks';
 import { products } from '../dataMocks';
 
-const [product] = products;
-
 describe('productName.component', () => {
+  const [product] = products;
   let scope;
   let compile;
 

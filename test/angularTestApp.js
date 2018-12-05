@@ -26,6 +26,8 @@ const eventually = ($scope) => (fn, interval, limit) => new Promise((resolve, re
   check();
 });
 
+expect.addSnapshotSerializer(snapshotSerializer);
+
 export default ({ modules, mocks, access }) => {
   (modules || []).forEach((module) => angular.mock.module(module));
 
@@ -57,8 +59,6 @@ export default ({ modules, mocks, access }) => {
       return eventually(app.$scope)(fn, interval, limit);
     };
   }]);
-
-  expect.addSnapshotSerializer(snapshotSerializer);
 
   return app;
 };

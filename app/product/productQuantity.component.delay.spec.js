@@ -1,4 +1,4 @@
-import angularTestApp from '../../test/angularTestApp';
+import { createTestApp } from 'angularjs-jest';
 import ProductModule from './product.module';
 import { products } from '../dataMocks';
 import { ProductServiceDelay200, UnitServiceDelay500 } from '../serviceMocks';
@@ -7,16 +7,16 @@ describe('productQuantity.component', () => {
   const [, product] = products;
   const patience = { interval: 200, limit: 10 };
 
-  const testAppWithDelays = () => angularTestApp({
+  const appWithDelays = {
     modules: [ProductModule],
     mocks: {
       ProductService: ($q) => ProductServiceDelay200($q),
       UnitService: ($q) => UnitServiceDelay500($q),
     },
-  });
+  };
 
   it('should render product quantity', async () => {
-    const testApp = testAppWithDelays();
+    const testApp = createTestApp(appWithDelays);
     const element = testApp.render(`
       <product-name product-id="'${product.id}'"></product-name>
       <product-quantity product-id="'${product.id}'" quantity="20"></product-quantity>
@@ -32,7 +32,7 @@ describe('productQuantity.component', () => {
   });
 
   it('should match snapshot', async () => {
-    const testApp = testAppWithDelays();
+    const testApp = createTestApp(appWithDelays);
     const element = testApp.render(`<product-quantity product-id="'${product.id}'" quantity="20"></product-quantity>`);
 
     await testApp.eventually(() => {

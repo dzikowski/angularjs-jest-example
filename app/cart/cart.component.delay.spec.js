@@ -1,4 +1,4 @@
-import angularTestApp from '../../test/angularTestApp';
+import { createTestApp } from 'angularjs-jest';
 import CartModule from './cart.module';
 import {
   CartServiceDelay500,
@@ -9,7 +9,7 @@ import {
 
 
 describe('cart.component', () => {
-  const testAppWithDelays = () => angularTestApp({
+  const testAppWithDelays = () => createTestApp({
     modules: [CartModule],
     mocks: {
       CartService: ($q) => CartServiceDelay500($q),

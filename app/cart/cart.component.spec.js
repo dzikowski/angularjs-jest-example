@@ -1,11 +1,11 @@
-import angularTestApp from '../../test/angularTestApp';
+import { createTestApp } from 'angularjs-jest';
 import CartModule from './cart.module';
 import {
   CartServiceInstant, PriceServiceInstant, ProductServiceInstant, UnitServiceInstant,
 } from '../serviceMocks';
 
 describe('cart.component', () => {
-  const testAppWithInstants = () => angularTestApp({
+  const testAppWithInstants = () => createTestApp({
     modules: [CartModule],
     mocks: {
       CartService: ($q) => CartServiceInstant($q),

@@ -6,48 +6,49 @@ import { ProductServicePromise } from '../serviceMocks';
 describe('productName.component', () => {
   const [product] = products;
 
+  const getTestAppWithProductService = (ProductService) => angularTestApp({
+    modules: [ProductModule],
+    mocks: { ProductService },
+  });
+
   it('should render product name with service based on `$q`', () => {
-    const ProductService = ($q) => ({
+    const testApp = getTestAppWithProductService(($q) => ({
       getProduct: () => $q((resolve) => resolve(product)),
-    });
-    const testApp = angularTestApp(ProductModule)({ ProductService: ($q) => ProductService($q) });
+    }));
 
     const element = testApp.render(`<product-name product-id="'${product.id}'" />`);
     expect(element.html()).toContain(product.name);
   });
 
   it('should NOT render product name with service based on `new Promise`', () => {
-    const ProductService = () => ({
+    const testApp = getTestAppWithProductService(() => ({
       getProduct: () => new Promise((resolve) => resolve(product)),
-    });
-    const testApp = angularTestApp(ProductModule)({ ProductService: ($q) => ProductService($q) });
+    }));
 
     const element = testApp.render(`<product-name product-id="'${product.id}'" />`);
     expect(element.html()).toContain('Unknown product');
   });
 
   it('should NOT render product name with service based on `Promise.resolve`', () => {
-    const ProductService = () => ({
+    const testApp = getTestAppWithProductService(() => ({
       getProduct: () => Promise.resolve(product),
-    });
-    const testApp = angularTestApp(ProductModule)({ ProductService: ($q) => ProductService($q) });
+    }));
 
     const element = testApp.render(`<product-name product-id="'${product.id}'" />`);
     expect(element.html()).toContain('Unknown product');
   });
 
   it('should NOT render product name with service based on `$q` with setTimeout', () => {
-    const ProductService = ($q) => ({
+    const testApp = getTestAppWithProductService(($q) => ({
       getProduct: () => $q((resolve) => setTimeout(() => resolve(product))),
-    });
-    const testApp = angularTestApp(ProductModule)({ ProductService: ($q) => ProductService($q) });
+    }));
 
     const element = testApp.render(`<product-name product-id="'${product.id}'" />`);
     expect(element.html()).toContain('Unknown product');
   });
 
   it('should render "Unknown product" and then product name with service based on Promise', async () => {
-    const testApp = angularTestApp(ProductModule)({ ProductService: () => ProductServicePromise() });
+    const testApp = getTestAppWithProductService(() => ProductServicePromise());
     const element = testApp.render(`<product-name product-id="'${product.id}'" />`);
 
     await testApp.eventually(() => {

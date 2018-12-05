@@ -9,11 +9,14 @@ import {
 
 
 describe('cart.component', () => {
-  const testAppWithDelays = () => angularTestApp(CartModule)({
-    CartService: ($q) => CartServiceDelay500($q),
-    ProductService: () => ProductServicePromise(),
-    PriceService: ($q) => PriceServiceDelay500($q),
-    UnitService: ($q) => UnitServiceDelay200($q),
+  const testAppWithDelays = () => angularTestApp({
+    modules: [CartModule],
+    mocks: {
+      CartService: ($q) => CartServiceDelay500($q),
+      ProductService: () => ProductServicePromise(),
+      PriceService: ($q) => PriceServiceDelay500($q),
+      UnitService: ($q) => UnitServiceDelay200($q),
+    },
   });
 
   const patience = { interval: 200, limit: 10 };

@@ -5,19 +5,21 @@ import { products } from '../dataMocks';
 
 describe('productName.component', () => {
   const [product] = products;
-  let testApp;
 
-  beforeEach(() => {
-    testApp = angularTestApp(ProductModule)({ ProductService: ($q) => ProductServiceInstant($q) });
+  const getTestApp = () => angularTestApp({
+    modules: [ProductModule],
+    mocks: { ProductService: ($q) => ProductServiceInstant($q) },
   });
 
   it('should render product name', () => {
+    const testApp = getTestApp();
     const element = testApp.render(`<product-name product-id="'${product.id}'" />`);
     expect(element.html()).toContain(product.name);
   });
 
   it('should render information about missing product', () => {
     const missingId = 'missing-product-id';
+    const testApp = getTestApp();
     const element = testApp.render(`<product-name product-id="'${missingId}'" />`);
     expect(element.html()).toContain('Unknown product');
     expect(element.html()).toContain(missingId);

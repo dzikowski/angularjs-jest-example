@@ -26,10 +26,10 @@ const eventually = ($scope) => (fn, interval, limit) => new Promise((resolve, re
   check();
 });
 
-export default (...modules) => (mocks, ...accessNames) => {
-  modules.forEach((module) => angular.mock.module(module));
+export default ({ modules, mocks, access }) => {
+  (modules || []).forEach((module) => angular.mock.module(module));
 
-  const mockNames = Object.keys(mocks);
+  const mockNames = Object.keys(mocks || {});
 
   angular.mock.module(($provide) => {
     mockNames.forEach((mockName) => {
@@ -40,7 +40,7 @@ export default (...modules) => (mocks, ...accessNames) => {
 
   const app = {};
 
-  const otherNames = [...new Set([...mockNames, ...accessNames])];
+  const otherNames = [...new Set([...mockNames, ...(access || [])])];
 
   angular.mock.inject(['$rootScope', '$compile', ...otherNames, ($rootScope, $compile, ...other) => {
     app.$scope = $rootScope.$new();

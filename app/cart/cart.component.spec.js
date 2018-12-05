@@ -5,19 +5,19 @@ import {
 } from '../serviceMocks';
 
 describe('cart.component', () => {
-  let testApp;
-
-  beforeEach(() => {
-    testApp = angularTestApp(CartModule)({
+  const testAppWithInstants = () => angularTestApp({
+    modules: [CartModule],
+    mocks: {
       CartService: ($q) => CartServiceInstant($q),
       ProductService: ($q) => ProductServiceInstant($q),
       PriceService: ($q) => PriceServiceInstant($q),
       UnitService: ($q) => UnitServiceInstant($q),
-    });
+    },
   });
 
   // this test works because we use $q(), which is synchronous
   it('should render cart', () => {
+    const testApp = testAppWithInstants();
     const element = testApp.render('<cart />');
     expect(element).toMatchSnapshot();
   });

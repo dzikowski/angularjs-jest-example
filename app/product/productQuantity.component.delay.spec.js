@@ -7,9 +7,12 @@ describe('productQuantity.component', () => {
   const [, product] = products;
   const patience = { interval: 200, limit: 10 };
 
-  const testAppWithDelays = () => angularTestApp(ProductModule)({
-    ProductService: ($q) => ProductServiceDelay200($q),
-    UnitService: ($q) => UnitServiceDelay500($q),
+  const testAppWithDelays = () => angularTestApp({
+    modules: [ProductModule],
+    mocks: {
+      ProductService: ($q) => ProductServiceDelay200($q),
+      UnitService: ($q) => UnitServiceDelay500($q),
+    },
   });
 
   it('should render product quantity', async () => {
